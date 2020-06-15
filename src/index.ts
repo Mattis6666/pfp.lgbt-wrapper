@@ -1,8 +1,8 @@
 import FormData = require('form-data');
 import fetch, { RequestInfo, RequestInit } from 'node-fetch';
 
-export class PfP {
-	readonly #baseUrl = 'https://api.pfp.lgbt/v3/';
+export default class PfP {
+	private readonly baseUrl = 'https://api.pfp.lgbt/v3/';
 	rateLimit = false;
 	rateLimitEnd: number = 0;
 	resetTimeout?: ReturnType<typeof setTimeout>;
@@ -66,7 +66,7 @@ export class PfP {
 	 * @returns `Promise<FlagResponse>`
 	 */
 	getFlags(): Promise<FlagResponse> {
-		return this._fetch(this.#baseUrl + 'flags', {}, 'json') as Promise<FlagResponse>;
+		return this._fetch(this.baseUrl + 'flags', {}, 'json') as Promise<FlagResponse>;
 	}
 
 	/**
@@ -75,7 +75,7 @@ export class PfP {
 	 * @returns `Promise<Buffer>`
 	 */
 	getFlag(flag: PrideFlags = 'pride') {
-		return this._fetch(this.#baseUrl + 'icon/' + flag, {}, 'img');
+		return this._fetch(this.baseUrl + 'icon/' + flag, {}, 'img');
 	}
 
 	/**
@@ -96,7 +96,7 @@ export class PfP {
 		format: 'jpg' | 'png' = 'png',
 		alpha?: number
 	) {
-		const url = `${this.#baseUrl}image/static/${type}/${style}/${flag}.${format}`;
+		const url = `${this.baseUrl}image/static/${type}/${style}/${flag}.${format}`;
 		if (!(image instanceof Buffer)) image = (await this._urlToBuf(image)) as Buffer;
 		if (!image) throw new Error('Invalid image provided');
 
@@ -112,7 +112,7 @@ export class PfP {
 	 * @returns `Promise<Buffer>`
 	 */
 	async createAnimated(image: Buffer | string, flag: PrideFlags, type: 'circle' | 'square' = 'circle', alpha?: number) {
-		const url = `${this.#baseUrl}image/animated/${type}/${flag}`;
+		const url = `${this.baseUrl}image/animated/${type}/${flag}`;
 
 		if (!(image instanceof Buffer)) image = (await this._urlToBuf(image)) as Buffer;
 		if (!image) throw new Error('Invalid image provided');
@@ -121,7 +121,7 @@ export class PfP {
 	}
 }
 
-type PrideFlags =
+export type PrideFlags =
 	| 'abrosexual'
 	| 'ace'
 	| 'agender'
