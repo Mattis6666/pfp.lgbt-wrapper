@@ -14,20 +14,92 @@ Unofficial wrapper for [pfp.lgbt](https://pfp.lgbt)!
 
 ## Usage
 
-TODO
+#### Get all available flags
+
+Returns `Promise<Object>`
+
+```ts
+getFlags();
+```
+
+#### Get a flag's image
+
+Returns `Promise<Buffer>`
+
+```ts
+getFlag(flag);
+```
+
+#### Lgbtify an image
+
+Returns `Promise<Buffer>`
+
+Static
+
+```js
+createStatic(
+	image, // The image to lgbtify. A Buffer or an image url
+	flag, // The Pride flag to add. A valid Pride flag
+	type, // The effect type. Any of circle | overlay | square | background - Defaults to circle
+	style, // The effect style. Any of solid | gradient - Defaults to solid
+	format, // The output format. Any of jpg | png - Defaults to png
+	alpha // The effect's alpha
+);
+```
+
+Animated
+
+```js
+createAnimated(
+	image,
+	flag,
+	type, // Any of circle | square - Defaults to circle
+	alpha
+);
+```
 
 ## Examples
 
-### Javascript
+#### Javascript
 
 ```js
-TODO;
+const PfPLGBT = require('pfp.lgbt-wrapper');
+const fs = require('fs');
+
+const pfp = new PfPLGBT();
+
+async function example() {
+	pfp.getFlags().then(console.log);
+
+	await pfp.getFlag('pan').then(result => fs.writeFileSync('./panFlag.png', result));
+
+	pfp.createStatic(fs.readFileSync('./panFlag.png'), 'pride').then(result => fs.writeFileSync('./staticImage.png', result));
+
+	pfp.createAnimated(fs.readFileSync('./panFlag.png'), 'pride', 'square', 100).then(result => fs.writeFileSync('./animatedImage.gif', result));
+}
+
+example();
 ```
 
-### Typescript
+#### Typescript
 
 ```ts
-TODO;
+import PfPLGBT from 'pfp.lgbt-wrapper';
+import * as fs from 'fs';
+
+const pfp = new PfPLGBT();
+
+async function example() {
+	pfp.getFlags().then(console.log);
+
+	await pfp.getFlag('pan').then(result => fs.writeFileSync('./panFlag.png', result));
+
+	pfp.createStatic(fs.readFileSync('./panFlag.png'), 'pride').then(result => fs.writeFileSync('./staticImage.png', result));
+
+	pfp.createAnimated(fs.readFileSync('./panFlag.png'), 'pride', 'square', 100).then(result => fs.writeFileSync('./animatedImage.gif', result));
+}
+
+example();
 ```
 
 ## License
