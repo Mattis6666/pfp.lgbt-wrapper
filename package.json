@@ -14,19 +14,19 @@
 		"gay",
 		"pfp"
 	],
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"files": [
 		"lib/**/*"
 	],
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Mattis6666/pfp.lgbt.git"
+		"url": "git+https://github.com/Mattis6666/pfp.lgbt-wrapper.git"
 	},
 	"bugs": {
-		"url": "https://github.com/Mattis6666/pfp.lgbt/issues"
+		"url": "https://github.com/Mattis6666/pfp.lgbt-wrapper/issues"
 	},
-	"homepage": "https://github.com/Mattis6666/pfp.lgbt#readme",
+	"homepage": "https://github.com/Mattis6666/pfp.lgbt-wrapper#readme",
 	"dependencies": {
 		"form-data": "^3.0.0",
 		"node-fetch": "^2.6.0"
@@ -41,5 +41,8 @@
 		"prepare": "npm run build",
 		"version": "git add -A src",
 		"postversion": "git push && git push --tags"
+	},
+	"directories": {
+		"lib": "lib"
 	}
 }
