@@ -1,6 +1,5 @@
 import FormData = require('form-data');
 import fetch, { RequestInfo, RequestInit } from 'node-fetch';
-import { writeFileSync } from 'fs';
 
 export class PfP {
 	private readonly baseUrl = 'https://api.pfp.lgbt/v3/';
@@ -18,6 +17,7 @@ export class PfP {
 				let rateLimitReset: number | string | null = res.headers.get('x-ratelimit-reset');
 
 				if (rateLimitRemaining === '0') {
+					// TODO: Fix this
 					this.rateLimit = true;
 					rateLimitReset = rateLimitReset ? parseInt(rateLimitReset) : Date.now() + 5000;
 					this.rateLimitEnd = rateLimitReset;
@@ -27,8 +27,8 @@ export class PfP {
 
 				if (res.status > 299 || res.status < 200) reject(`${res.status}: ${res.statusText}`);
 				try {
-					if (type === 'img') await res.buffer().then(buf => resolve(buf));
-					else if (type === 'json') await res.json().then(json => resolve(json));
+					if (type === 'img') await res.buffer().then(resolve);
+					else if (type === 'json') await res.json().then(resolve);
 					else reject(`${type} is not a valid mime type`);
 				} catch (error) {
 					reject(error);
@@ -79,16 +79,6 @@ export class PfP {
 	}
 }
 
-async function main() {
-	const test = new PfP();
-	const img = await fetch('https://cdn.discordapp.com/attachments/587142594497085451/721859760491724880/unknown.png').then(res => res.buffer());
-	await test.createStatic(img, 'pan', 'circle', 'solid', 'png', 10).then(res => writeFileSync('./test.png', res));
-	await test.createStatic(img, 'pan', 'circle', 'solid', 'png', 10).then(res => writeFileSync('./test2.png', res));
-	// await test.createStatic(img, 'pan', 'circle', 'solid', 'png', 10).then(res => writeFileSync('./test2.png', res));
-	test.getFlag('pan');
-	test.getFlags();
-}
-
 type PrideFlags =
 	| 'abrosexual'
 	| 'ace'
@@ -109,4 +99,12 @@ type FlagResponse = {
 	[key in PrideFlags]: { defaultAlpha: number; tooltip: string };
 };
 
-main();
+/* async function main() {
+	const test = new PfP();
+	const img = await fetch('https://cdn.discordapp.com/attachments/587142594497085451/721859760491724880/unknown.png').then(res => res.buffer());
+	await test.createStatic(img, 'pan', 'circle', 'solid', 'png', 10).then(res => writeFileSync('./test.png', res));
+	await test.createStatic(img, 'pan', 'circle', 'solid', 'png', 10).then(res => writeFileSync('./test2.png', res));
+	await test.createStatic(img, 'pan', 'circle', 'solid', 'png', 10).then(res => writeFileSync('./test2.png', res));
+	test.getFlag('pan');
+	test.getFlags();
+} */
