@@ -40,7 +40,7 @@ export class PfP {
 		});
 	}
 
-	private async _fetchImage(url: string, buf: Buffer, alpha?: number) {
+	private _fetchImage(url: string, buf: Buffer, alpha?: number) {
 		const data = new FormData();
 		data.append('file', buf, 'image.png');
 		if (alpha) data.append('alpha', alpha);
@@ -64,7 +64,7 @@ export class PfP {
 		return this._fetch(this.baseUrl + 'icon/' + flag, {}, 'img');
 	}
 
-	async createStatic(
+	createStatic(
 		image: Buffer,
 		flag: PrideFlags,
 		type: 'circle' | 'overlay' | 'square' | 'background' = 'circle',
@@ -76,7 +76,7 @@ export class PfP {
 		return this._fetchImage(url, image, alpha);
 	}
 
-	async createAnimated(image: Buffer, flag: PrideFlags, type: 'circle' | 'square' = 'circle', alpha?: number) {
+	createAnimated(image: Buffer, flag: PrideFlags, type: 'circle' | 'square' = 'circle', alpha?: number) {
 		const url = `${this.baseUrl}image/animated/${type}/${flag}`;
 		return this._fetchImage(url, image, alpha);
 	}
