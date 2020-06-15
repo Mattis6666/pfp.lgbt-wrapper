@@ -12,9 +12,9 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"moduleResolution": "Node",
-		"lib": ["ES2019"],
+		"lib": ["ES6"],
 		"module": "commonjs",
-		"target": "ES2019",
+		"target": "ES6",
 		"declaration": true
 	},
 	"compileOnSave": true,
