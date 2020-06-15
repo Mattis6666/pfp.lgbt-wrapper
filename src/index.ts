@@ -2,7 +2,7 @@ import FormData = require('form-data');
 import fetch, { RequestInfo, RequestInit } from 'node-fetch';
 
 export class PfP {
-	private readonly baseUrl = 'https://api.pfp.lgbt/v3/';
+	readonly #baseUrl = 'https://api.pfp.lgbt/v3/';
 	rateLimit = false;
 	rateLimitEnd: number = 0;
 	resetTimeout?: ReturnType<typeof setTimeout>;
@@ -56,28 +56,67 @@ export class PfP {
 		);
 	}
 
+	private _urlToBuf(url: string) {
+		return fetch(url)
+			.then(res => res.buffer())
+			.catch(() => null);
+	}
+	/**
+	 * Get an object containing all valid flags and their defaults
+	 * @returns `Promise<FlagResponse>`
+	 */
 	getFlags(): Promise<FlagResponse> {
-		return this._fetch(this.baseUrl + 'flags', {}, 'json') as Promise<FlagResponse>;
+		return this._fetch(this.#baseUrl + 'flags', {}, 'json') as Promise<FlagResponse>;
 	}
 
+	/**
+	 * Get an image of the provided flag
+	 * @param flag The target flag. You can get a list of all flags with the `getFlags()` method
+	 * @returns `Promise<Buffer>`
+	 */
 	getFlag(flag: PrideFlags = 'pride') {
-		return this._fetch(this.baseUrl + 'icon/' + flag, {}, 'img');
+		return this._fetch(this.#baseUrl + 'icon/' + flag, {}, 'img');
 	}
 
-	createStatic(
-		image: Buffer,
+	/**
+	 * Create a static lgbtifed image
+	 * @param image Buffer/Url of the image to lgbtify
+	 * @param flag The Pride flag to add
+	 * @param type The effect type
+	 * @param style The effect style
+	 * @param format The format of the resulting image
+	 * @param alpha The alpha the effect will have
+	 * @returns `Promise<Buffer>`
+	 */
+	async createStatic(
+		image: Buffer | string,
 		flag: PrideFlags,
 		type: 'circle' | 'overlay' | 'square' | 'background' = 'circle',
 		style: 'solid' | 'gradient' = 'solid',
 		format: 'jpg' | 'png' = 'png',
 		alpha?: number
 	) {
-		const url = `${this.baseUrl}image/static/${type}/${style}/${flag}.${format}`;
+		const url = `${this.#baseUrl}image/static/${type}/${style}/${flag}.${format}`;
+		if (!(image instanceof Buffer)) image = (await this._urlToBuf(image)) as Buffer;
+		if (!image) throw new Error('Invalid image provided');
+
 		return this._fetchImage(url, image, alpha);
 	}
 
-	createAnimated(image: Buffer, flag: PrideFlags, type: 'circle' | 'square' = 'circle', alpha?: number) {
-		const url = `${this.baseUrl}image/animated/${type}/${flag}`;
+	/**
+	 * Create an animated lgbtifed image
+	 * @param image Buffer/Url of the image to lgbtify
+	 * @param flag The Pride flag to add
+	 * @param type The effect type
+	 * @param alpha The alpha the effect will have
+	 * @returns `Promise<Buffer>`
+	 */
+	async createAnimated(image: Buffer | string, flag: PrideFlags, type: 'circle' | 'square' = 'circle', alpha?: number) {
+		const url = `${this.#baseUrl}image/animated/${type}/${flag}`;
+
+		if (!(image instanceof Buffer)) image = (await this._urlToBuf(image)) as Buffer;
+		if (!image) throw new Error('Invalid image provided');
+
 		return this._fetchImage(url, image, alpha);
 	}
 }

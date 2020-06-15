@@ -1,5 +1,5 @@
 {
-	"name": "pfp.lgbt",
+	"name": "pfp.lgbt-wrapper",
 	"description": "A pfp.lgbt Wrapper",
 	"version": "1.0.0",
 	"author": "VenNeptury <sgtmattis@gmail.com> (https://github.com/Mattis6666)",
@@ -15,6 +15,15 @@
 		"pfp"
 	],
 	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Mattis6666/pfp.lgbt.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Mattis6666/pfp.lgbt/issues"
+	},
+	"homepage": "https://github.com/Mattis6666/pfp.lgbt#readme",
 	"dependencies": {
 		"form-data": "^3.0.0",
 		"node-fetch": "^2.6.0"
@@ -23,5 +32,11 @@
 		"@types/node": "^14.0.13",
 		"@types/node-fetch": "^2.5.7",
 		"typescript": "^3.9.5"
+	},
+	"scripts": {
+		"build": "tsc",
+		"prepare": "npm run build",
+		"version": "git add -A src",
+		"postversion": "git push && git push --tags"
 	}
 }
