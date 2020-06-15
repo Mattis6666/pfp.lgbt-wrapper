@@ -1,0 +1,27 @@
+{
+	"name": "pfp.lgbt",
+	"description": "A pfp.lgbt Wrapper",
+	"version": "1.0.0",
+	"author": "VenNeptury <sgtmattis@gmail.com> (https://github.com/Mattis6666)",
+	"license": "GPL-3.0",
+	"keywords": [
+		"lgbt",
+		"lgbtq",
+		"image",
+		"picture",
+		"manipulation",
+		"pride",
+		"gay",
+		"pfp"
+	],
+	"main": "dist/index.js",
+	"dependencies": {
+		"form-data": "^3.0.0",
+		"node-fetch": "^2.6.0"
+	},
+	"devDependencies": {
+		"@types/node": "^14.0.13",
+		"@types/node-fetch": "^2.5.7",
+		"typescript": "^3.9.5"
+	}
+}
